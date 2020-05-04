@@ -7,7 +7,7 @@ public class Sudoku {
 
     int totalSlots = 81;
     int generatedClues = (int)((Math.random() * 8) + 17);
-    System.out.println("generated clues : " + generatedClues);
+    System.out.println("Generated clues : " + generatedClues);
     int freeSlots = totalSlots - (int)generatedClues;
     System.out.println("Free slots : " + freeSlots);
     int[][] sudokuBoard = new int[9][9];
@@ -78,24 +78,6 @@ public class Sudoku {
       values.add(current_value + " in subsection " + x/3 + " " + y/3);
 
     }
-    // for (int i = 0; i<9; i++) {
-    //   for (int j = 0; j<9; j++){
-    //     int current_value = (int)((Math.random() * 9) + 1);
-    //     sudokuBoard[i][j] = current_value;
-    //     System.out.println(current_value);
-    //     while(values.contains(current_value + "in row " + i) || values.contains(current_value+ "in column " + j) || values.contains(current_value + "in subsection " + i/3 + " " + j/3)) {
-    //       current_value = (int)((Math.random() * 9) + 1);
-    //       sudokuBoard[i][j] = current_value; 
-    //     }
-    //     values.add(current_value + " in row " + i);
-    //     values.add(current_value+ " in column " + j);
-    //     values.add(current_value + " in subsection " + i/3 + " " + j/3);
-    //     System.out.print(current_value);
-    //     System.out.println(" Moved on in the loop");
-    //     System.out.println("HashSet Contains "+ values);
-    //     System.out.println(Arrays.deepToString(sudokuBoard));
-    //   }
-    // }
   }
 
 }
