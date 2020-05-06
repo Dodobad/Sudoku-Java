@@ -3,7 +3,7 @@ import java.util.HashSet;
 import java.util.Arrays;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -12,23 +12,12 @@ import javafx.stage.Stage;
 
 public class Sudoku extends Application{
   public static void main(String[] args) {
-    Pane grid;
-    int totalSlots = 81;
-    int generatedClues = (int)((Math.random() * 8) + 17);
-    System.out.println("Generated clues : " + generatedClues);
-    int freeSlots = totalSlots - (int)generatedClues;
-    System.out.println("Free slots : " + freeSlots);
-    int[][] sudokuBoard = new int[9][9];
-    generate_first(sudokuBoard, generatedClues);
-    System.out.println(Arrays.deepToString(sudokuBoard));
-    grid = makeGUI(9);
     launch(args);
     
   }
 
   public void start(Stage primaryStage) throws Exception {
-    primaryStage.setTitle("Sudoku Generator");
-    primaryStage.show();
+    sudokuLogic(primaryStage);
   }
 
   public static void generate_first(int[][] sudokuBoard,int clues) {
@@ -49,25 +38,68 @@ public class Sudoku extends Application{
     }
   }
 
-  public static Pane makeGUI(int n) {
-    double width = 150;
+  public static Pane makeGUI(int n, int[][] initBoard) {
+    double width = 50;
     Pane grid = new Pane();
-
+    double offsetXAdded =0;
+    double offsetYAdded = 0;
     Rectangle [][] rec = new Rectangle [n][n];
+    
     
     for(int i = 0; i<n; i++) {
       for(int j = 0; j<n; j++) {
+        //if(((i+1)%3==1&& i !=8 && i!=0)) offsetXAdded=5;
+        //if(((j+1)%3 ==1 && j!=8 && j!=0)) offsetYAdded+=5;
+        if(j==0) offsetYAdded= 0;
+        if(i==0) offsetXAdded =0;
+        if(i==3) offsetXAdded = 5;
+        if(j==3) offsetYAdded = 5;
+        if(i==6) offsetXAdded = 10;
+        if(j==6) offsetYAdded = 10;
         rec[i][j] = new Rectangle();
-        rec[i][j].setX(i  * width);
-        rec[i][j].setY(j * width);
+        rec[i][j].setX(i * width +offsetXAdded);
+        rec[i][j].setY(j * width +offsetYAdded);
         rec[i][j].setWidth(width);
         rec[i][j].setHeight(width);
         rec[i][j].setFill(null);
-        rec[i][j].setStroke(Color.BLACK);
-        grid.getChildren().add(rec[i][j]);
+        rec[i][j].setStroke(Color.BLUE);
+        
+       
+        if (initBoard[i][j] != 0){
+          StackPane block = new StackPane();
+          block.setLayoutX(i*width + offsetXAdded);
+          block.setLayoutY(j*width + offsetYAdded);
+          Text number = new Text(Integer.toString(initBoard[i][j]));
+          block.getChildren().addAll(rec[i][j],number);
+          grid.getChildren().add(block);
+        }
+        else{
+          grid.getChildren().add(rec[i][j]);
+        }
       }
     }
     return grid;
+  }
+
+  private void sudokuLogic(Stage stage){
+    Pane grid = new Pane();
+    int totalSlots = 81;
+    int generatedClues = (int)((Math.random() * 8) + 17);
+    int[][] sudokuBoard = new int[9][9];
+    int freeSlots = totalSlots - (int)generatedClues;
+
+    System.out.println("Generated clues : " + generatedClues);
+    System.out.println("Free slots : " + freeSlots);
+    
+    generate_first(sudokuBoard, generatedClues);
+    System.out.println(Arrays.deepToString(sudokuBoard));
+
+    grid = makeGUI(9, sudokuBoard);
+    
+    Scene scene = new Scene(grid,465,465,Color.WHITESMOKE);
+    stage.setTitle("Sudoku Generator");
+    stage.setScene(scene);
+    stage.show();
   }
 
 }
