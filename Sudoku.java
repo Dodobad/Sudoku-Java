@@ -3,12 +3,15 @@ import java.util.HashSet;
 import java.util.Arrays;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 
 public class Sudoku extends Application{
   public static void main(String[] args) {
@@ -56,6 +59,9 @@ public class Sudoku extends Application{
         if(j==3) offsetYAdded = 5;
         if(i==6) offsetXAdded = 10;
         if(j==6) offsetYAdded = 10;
+        StackPane block = new StackPane();
+        block.setLayoutX(i*width + offsetXAdded);
+        block.setLayoutY(j*width + offsetYAdded);
         rec[i][j] = new Rectangle();
         rec[i][j].setX(i * width +offsetXAdded);
         rec[i][j].setY(j * width +offsetYAdded);
@@ -64,20 +70,22 @@ public class Sudoku extends Application{
         rec[i][j].setFill(null);
         rec[i][j].setStroke(Color.BLUE);
         
-       
-        if (initBoard[i][j] != 0){
-          StackPane block = new StackPane();
-          block.setLayoutX(i*width + offsetXAdded);
-          block.setLayoutY(j*width + offsetYAdded);
+        if (initBoard[i][j] != 0){ 
           Text number = new Text(Integer.toString(initBoard[i][j]));
           block.getChildren().addAll(rec[i][j],number);
-          grid.getChildren().add(block);
+        } else{
+          MenuButton numberSelector = new MenuButton("?");
+          for (int num =1; num < 10; num++){
+            numberSelector.getItems().add(new MenuItem(Integer.toString(num)));
+          }
+          block.getChildren().addAll(rec[i][j],numberSelector);
         }
-        else{
-          grid.getChildren().add(rec[i][j]);
-        }
+
+        grid.getChildren().add(block);
+
       }
     }
+
     return grid;
   }
 
