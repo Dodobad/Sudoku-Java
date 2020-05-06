@@ -28,8 +28,8 @@ public class Sudoku extends Application{
     sudokuLogic(primaryStage);
   }
 
-  public static void generate_first(int[][] sudokuBoard,int clues) {
-    HashSet<String> values = new HashSet();
+  public static HashSet<String> generate_first(int[][] sudokuBoard,int clues) {
+    HashSet<String> values = new HashSet<String>();
     for (int i=0; i<clues; i++) {
       int current_value = (int)(Math.random()*9)+1;
       int x = (int)(Math.random() * 9);
@@ -44,9 +44,10 @@ public class Sudoku extends Application{
       values.add(current_value + " in subsection " + x/3 + " " + y/3);
 
     }
+    return values;
   }
 
-  public static VBox makeGUI(int n, int[][] initBoard) {
+  public static VBox makeGUI(int n, int[][] initBoard, HashSet<String> values) {
     double width = 50;
     Pane grid = new Pane();
     
@@ -58,8 +59,8 @@ public class Sudoku extends Application{
     
     for(int i = 0; i<n; i++) {
       for(int j = 0; j<n; j++) {
-        //if(((i+1)%3==1&& i !=8 && i!=0)) offsetXAdded=5;
-        //if(((j+1)%3 ==1 && j!=8 && j!=0)) offsetYAdded+=5;
+        final int i_final = i;
+        final int j_final = j;
         if(j==0) offsetYAdded= 0;
         if(i==0) offsetXAdded =0;
         if(i==3) offsetXAdded = 5;
@@ -87,9 +88,18 @@ public class Sudoku extends Application{
           MenuItem[] itemChoices = new MenuItem[9];
           EventHandler<ActionEvent> itemSelected = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e){
-              numberSelector.setText(((MenuItem)e.getSource()).getText());
+
+              if(values.contains(((MenuItem)e.getSource()).getText() + " in row " + i_final) || values.contains(((MenuItem)e.getSource()).getText()+ " in column " + j_final) || values.contains(((MenuItem)e.getSource()).getText() + " in subsection " + i_final/3 + " " + j_final/3)){ 
+               numberSelector.setText("X");
+              } else {
+               numberSelector.setText(((MenuItem)e.getSource()).getText());
+               values.add(((MenuItem)e.getSource()).getText() + " in row " + i_final);
+               values.add(((MenuItem)e.getSource()).getText()+ " in column " + j_final);
+               values.add(((MenuItem)e.getSource()).getText() + " in subsection " + i_final/3 + " " + j_final/3);
+              }
             }
           };
+         
           for (int num =1; num < 10; num++){
             itemChoices[num-1] =new MenuItem(Integer.toString(num));
             numberSelector.getItems().add(itemChoices[num-1]);
@@ -112,19 +122,14 @@ public class Sudoku extends Application{
   }
 
   private void sudokuLogic(Stage stage){
-    Pane grid = new Pane();
-    int totalSlots = 81;
+    VBox grid = new VBox();
     int generatedClues = (int)((Math.random() * 8) + 17);
     int[][] sudokuBoard = new int[9][9];
-    int freeSlots = totalSlots - (int)generatedClues;
+    HashSet<String> validatedNumbers = new HashSet<String>();
 
-    System.out.println("Generated clues : " + generatedClues);
-    System.out.println("Free slots : " + freeSlots);
-    
-    generate_first(sudokuBoard, generatedClues);
-    System.out.println(Arrays.deepToString(sudokuBoard));
+    validatedNumbers = generate_first(sudokuBoard, generatedClues);
 
-    grid = makeGUI(9, sudokuBoard);
+    grid = makeGUI(9, sudokuBoard,validatedNumbers);
     
     Scene scene = new Scene(grid,465,465,Color.WHITESMOKE);
     stage.setTitle("Sudoku Generator");
