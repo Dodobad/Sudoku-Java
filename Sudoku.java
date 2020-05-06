@@ -2,10 +2,15 @@ import java.lang.Math;
 import java.util.HashSet;
 import java.util.Arrays;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.text.Text;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -41,9 +46,11 @@ public class Sudoku extends Application{
     }
   }
 
-  public static Pane makeGUI(int n, int[][] initBoard) {
+  public static VBox makeGUI(int n, int[][] initBoard) {
     double width = 50;
     Pane grid = new Pane();
+    
+    
     double offsetXAdded =0;
     double offsetYAdded = 0;
     Rectangle [][] rec = new Rectangle [n][n];
@@ -75,13 +82,19 @@ public class Sudoku extends Application{
           block.getChildren().addAll(rec[i][j],number);
         } else{
           MenuButton numberSelector = new MenuButton();
+          numberSelector.setStyle("-fx-background-color: whitesmoke");
           numberSelector.setText("?");
           MenuItem[] itemChoices = new MenuItem[9];
+          EventHandler<ActionEvent> itemSelected = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e){
+              numberSelector.setText(((MenuItem)e.getSource()).getText());
+            }
+          };
           for (int num =1; num < 10; num++){
             itemChoices[num-1] =new MenuItem(Integer.toString(num));
             numberSelector.getItems().add(itemChoices[num-1]);
+            itemChoices[num-1].setOnAction(itemSelected);
           }
-
           
           block.getChildren().addAll(rec[i][j],numberSelector);
         }
@@ -90,8 +103,12 @@ public class Sudoku extends Application{
 
       }
     }
+    HBox horizontalCenter = new HBox(grid);
+    VBox verticalCenter = new VBox(horizontalCenter);
+    verticalCenter.setAlignment(Pos.CENTER);
+    horizontalCenter.setAlignment(Pos.CENTER);
 
-    return grid;
+    return verticalCenter;
   }
 
   private void sudokuLogic(Stage stage){
