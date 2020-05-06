@@ -3,7 +3,6 @@ import java.util.HashSet;
 import java.util.Arrays;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -12,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+
 
 public class Sudoku extends Application{
   public static void main(String[] args) {
@@ -74,10 +74,15 @@ public class Sudoku extends Application{
           Text number = new Text(Integer.toString(initBoard[i][j]));
           block.getChildren().addAll(rec[i][j],number);
         } else{
-          MenuButton numberSelector = new MenuButton("?");
+          MenuButton numberSelector = new MenuButton();
+          numberSelector.setText("?");
+          MenuItem[] itemChoices = new MenuItem[9];
           for (int num =1; num < 10; num++){
-            numberSelector.getItems().add(new MenuItem(Integer.toString(num)));
+            itemChoices[num-1] =new MenuItem(Integer.toString(num));
+            numberSelector.getItems().add(itemChoices[num-1]);
           }
+
+          
           block.getChildren().addAll(rec[i][j],numberSelector);
         }
 
