@@ -71,11 +71,11 @@ public class Sudoku extends Application{
         if(i==6) offsetXAdded = 10;
         if(j==6) offsetYAdded = 10;
         StackPane block = new StackPane();
-        block.setLayoutX(i*width + offsetXAdded);
-        block.setLayoutY(j*width + offsetYAdded);
+        block.setLayoutX(j*width + offsetYAdded);
+        block.setLayoutY(i*width + offsetXAdded);
         rec[i][j] = new Rectangle();
-        rec[i][j].setX(i * width +offsetXAdded);
-        rec[i][j].setY(j * width +offsetYAdded);
+        rec[i][j].setX(j * width +offsetYAdded);
+        rec[i][j].setY(i * width +offsetXAdded);
         rec[i][j].setWidth(width);
         rec[i][j].setHeight(width);
         rec[i][j].setFill(null);
