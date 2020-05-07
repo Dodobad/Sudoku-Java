@@ -82,7 +82,7 @@ public class Sudoku extends Application{
         rec[i][j].setStroke(Color.BLUE);
         
         if (initBoard[i][j] != 0){ 
-          System.out.println(initBoard[i][j] + " in row " + j +" in column " +i + " for GUI");
+          System.out.println(initBoard[i][j] + " in row " + i +" in column " +j + " for GUI");
           Text number = new Text(Integer.toString(initBoard[i][j]));
           block.getChildren().addAll(rec[i][j],number);
         } else{
