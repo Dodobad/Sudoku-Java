@@ -83,7 +83,7 @@ public class Sudoku extends Application{
         } else{
           MenuButton numberSelector = new MenuButton();
           numberSelector.setStyle("-fx-background-color: whitesmoke");
-          numberSelector.setText("?");
+          numberSelector.setText(" ");
           MenuItem[] itemChoices = new MenuItem[9];
           EventHandler<ActionEvent> itemSelected = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e){
