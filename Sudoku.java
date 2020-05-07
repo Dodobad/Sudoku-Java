@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
+import java.util.regex.*;
 
 
 public class Sudoku extends Application{
@@ -31,24 +32,29 @@ public class Sudoku extends Application{
   }
 
   public static HashSet<String> generate_first(int[][] sudokuBoard,int clues) {
+    int x,y;
     HashSet<String> values = new HashSet<String>();
     System.out.println("Total Clues given " +clues);
+    HashSet<String> pairs = new HashSet<String>();
     for (int i=0; i<clues; i++) {
       int current_value = (int)(Math.random()*9)+1;
-      int x = (int)(Math.random() *9);
-      int y = (int)(Math.random() *9);
-      while(values.contains(current_value + " in row " + x) || values.contains(current_value+ " in column " + y) || values.contains(current_value + " in subsection " + x/3 + " " + y/3)){
-        x = (int)(Math.random() * 9);
-        y = (int)(Math.random() *9); 
+      do {
+       x = (int)(Math.random() *9);
+       y = (int)(Math.random() *9);
+      }
+      while(values.contains(current_value + " in row " + x) || values.contains(current_value+ " in column " + y) || values.contains(current_value + " in subsection " + x/3 + " " + y/3));
+      if(!pairs.add(x+" and " +y)) {
+        clues +=1;
+        continue;
       }
       sudokuBoard[x][y] = current_value;
       values.add(current_value + " in row " + x);
       values.add(current_value+ " in column " + y);
       values.add(current_value + " in subsection " + x/3 + " " + y/3);
       System.out.println(current_value+ " in row " + x + " in column " + y + " in subsection " + x/3 + " " + y/3);
-      
     }
     System.out.println(Arrays.deepToString(sudokuBoard));
+    System.out.println(values.size());
     return values;
   }
 
