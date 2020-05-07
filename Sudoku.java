@@ -1,6 +1,5 @@
 import java.lang.Math;
 import java.util.HashSet;
-import java.util.Arrays;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -88,9 +87,12 @@ public class Sudoku extends Application{
           MenuItem[] itemChoices = new MenuItem[9];
           EventHandler<ActionEvent> itemSelected = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e){
-
+              System.out.println(values.remove(numberSelector.getText() + " in row " + i_final));
+              System.out.println(values.remove(numberSelector.getText()+ " in column " + j_final));
+              System.out.println(values.remove(numberSelector.getText() + " in subsection " + i_final/3 + " " + j_final/3));
               if(values.contains(((MenuItem)e.getSource()).getText() + " in row " + i_final) || values.contains(((MenuItem)e.getSource()).getText()+ " in column " + j_final) || values.contains(((MenuItem)e.getSource()).getText() + " in subsection " + i_final/3 + " " + j_final/3)){ 
-               numberSelector.setText("X");
+                System.out.println(i_final + " " + j_final);
+                numberSelector.setText("X");
               } else {
                numberSelector.setText(((MenuItem)e.getSource()).getText());
                values.add(((MenuItem)e.getSource()).getText() + " in row " + i_final);
