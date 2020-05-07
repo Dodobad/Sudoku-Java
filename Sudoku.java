@@ -13,8 +13,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Alert.AlertType;
 
 
 public class Sudoku extends Application{
@@ -29,9 +31,10 @@ public class Sudoku extends Application{
 
   public static HashSet<String> generate_first(int[][] sudokuBoard,int clues) {
     HashSet<String> values = new HashSet<String>();
+    System.out.println("Total Clues given " +clues);
     for (int i=0; i<clues; i++) {
       int current_value = (int)(Math.random()*9)+1;
-      int x = (int)(Math.random() * 9);
+      int x = (int)(Math.random() *9);
       int y = (int)(Math.random() *9);
       while(values.contains(current_value + " in row " + x) || values.contains(current_value+ " in column " + y) || values.contains(current_value + " in subsection " + x/3 + " " + y/3)){
         x = (int)(Math.random() * 9);
@@ -41,6 +44,7 @@ public class Sudoku extends Application{
       values.add(current_value + " in row " + x);
       values.add(current_value+ " in column " + y);
       values.add(current_value + " in subsection " + x/3 + " " + y/3);
+      System.out.println(current_value+ " in row " + x + " in column " + y + " in subsection " + x/3 + " " + y/3);
 
     }
     return values;
@@ -78,6 +82,7 @@ public class Sudoku extends Application{
         rec[i][j].setStroke(Color.BLUE);
         
         if (initBoard[i][j] != 0){ 
+          System.out.println(initBoard[i][j] + " in row " + j +" in column " +i + " for GUI");
           Text number = new Text(Integer.toString(initBoard[i][j]));
           block.getChildren().addAll(rec[i][j],number);
         } else{
@@ -91,13 +96,21 @@ public class Sudoku extends Application{
               System.out.println(values.remove(numberSelector.getText()+ " in column " + j_final));
               System.out.println(values.remove(numberSelector.getText() + " in subsection " + i_final/3 + " " + j_final/3));
               if(values.contains(((MenuItem)e.getSource()).getText() + " in row " + i_final) || values.contains(((MenuItem)e.getSource()).getText()+ " in column " + j_final) || values.contains(((MenuItem)e.getSource()).getText() + " in subsection " + i_final/3 + " " + j_final/3)){ 
+                System.out.println(values.contains(((MenuItem)e.getSource()).getText() + " in row " + i_final));
+                System.out.println(values.contains(((MenuItem)e.getSource()).getText()+ " in column " + j_final));
+                System.out.println(values.contains(((MenuItem)e.getSource()).getText() + " in subsection " + i_final/3 + " " + j_final/3));
                 System.out.println(i_final + " " + j_final);
+                System.out.println(i_final/3 + " " + j_final/3);
                 numberSelector.setText("X");
               } else {
                numberSelector.setText(((MenuItem)e.getSource()).getText());
                values.add(((MenuItem)e.getSource()).getText() + " in row " + i_final);
                values.add(((MenuItem)e.getSource()).getText()+ " in column " + j_final);
                values.add(((MenuItem)e.getSource()).getText() + " in subsection " + i_final/3 + " " + j_final/3);
+               if(values.size() == (3*81)){
+                 Alert winAlert = new Alert(AlertType.INFORMATION, "Congratulations!");
+                 winAlert.show();
+               }
               }
             }
           };
