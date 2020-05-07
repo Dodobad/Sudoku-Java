@@ -1,4 +1,5 @@
 import java.lang.Math;
+import java.util.Arrays;
 import java.util.HashSet;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -38,22 +39,23 @@ public class Sudoku extends Application{
       int y = (int)(Math.random() *9);
       while(values.contains(current_value + " in row " + x) || values.contains(current_value+ " in column " + y) || values.contains(current_value + " in subsection " + x/3 + " " + y/3)){
         x = (int)(Math.random() * 9);
-        y = (int)(Math.random() *9);
+        y = (int)(Math.random() *9); 
       }
       sudokuBoard[x][y] = current_value;
       values.add(current_value + " in row " + x);
       values.add(current_value+ " in column " + y);
       values.add(current_value + " in subsection " + x/3 + " " + y/3);
       System.out.println(current_value+ " in row " + x + " in column " + y + " in subsection " + x/3 + " " + y/3);
-
+      
     }
+    System.out.println(Arrays.deepToString(sudokuBoard));
     return values;
   }
 
   public static VBox makeGUI(int n, int[][] initBoard, HashSet<String> values) {
     double width = 50;
     Pane grid = new Pane();
-    
+    System.out.println(Arrays.deepToString(initBoard));
     
     double offsetXAdded =0;
     double offsetYAdded = 0;
